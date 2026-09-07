@@ -1,23 +1,23 @@
+from fastapi import FastAPI, UploadFile, File
+from PIL import Image
+import io
 import torch
 import torch.nn as nn
 from torchvision import models, transforms
 from torchvision.datasets import Food101
-from PIL import Image
+from backend.recipe_service import get_recipes
 
 
-# -------------------------
-# DEVICE
-# -------------------------
+app = FastAPI(
+    title="Food AI Recipe Recommender",
+    version="1.0.0"
+)
+
 device = torch.device(
     "cuda" if torch.cuda.is_available() else "cpu"
 )
 
-print("Using device:", device)
-
-
-# -------------------------
-# LOAD FOOD-101 CLASSES
-# -------------------------
+# Load Food-101 class names
 dataset = Food101(
     root="./data",
     split="test",
@@ -26,10 +26,7 @@ dataset = Food101(
 
 class_names = dataset.classes
 
-
-# -------------------------
-# LOAD MODEL
-# -------------------------
+# Load model
 weights = models.MobileNet_V3_Small_Weights.DEFAULT
 
 model = models.mobilenet_v3_small(
@@ -51,10 +48,7 @@ model.load_state_dict(
 model = model.to(device)
 model.eval()
 
-
-# -------------------------
-# IMAGE TRANSFORM
-# -------------------------
+# Image preprocessing
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -65,24 +59,44 @@ transform = transforms.Compose([
 ])
 
 
-# -------------------------
-# PREDICT FUNCTION
-# -------------------------
-def predict_image(image_path):
+@app.get("/")
+def root():
+    return {
+        "message": "Food AI Recipe Recommender API"
+    }
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy"
+    }
+
+
+@app.get("/recipes")
+def recipes(query: str):
+    return {
+        "query": query,
+        "recipes": get_recipes(query)
+    }
+
+
+@app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+
+    image_bytes = await file.read()
 
     image = Image.open(
-        image_path
+        io.BytesIO(image_bytes)
     ).convert("RGB")
 
-    image = transform(image)
-
-    image = image.unsqueeze(0)
-
-    image = image.to(device)
+    image_tensor = transform(image)
+    image_tensor = image_tensor.unsqueeze(0)
+    image_tensor = image_tensor.to(device)
 
     with torch.no_grad():
 
-        outputs = model(image)
+        outputs = model(image_tensor)
 
         probabilities = torch.softmax(
             outputs,
@@ -109,58 +123,23 @@ def predict_image(image_path):
                 )
             })
 
-
-    # -------------------------
-    # CONFIDENCE CHECK
-    # -------------------------
     predicted_class = top_predictions[0]["food"]
 
     top1_confidence = top_predictions[0]["confidence"]
     top2_confidence = top_predictions[1]["confidence"]
 
-    confidence_gap = (
-        top1_confidence - top2_confidence
-    )
+    confidence_gap = top1_confidence - top2_confidence
 
-    if (
-        top1_confidence < 50
-        or confidence_gap < 15
-    ):
+    if top1_confidence < 50 or confidence_gap < 15:
         predicted_class = "uncertain"
-
+        recipe_results = []
+    else:
+        recipe_results = get_recipes(predicted_class)
 
     return {
         "prediction": predicted_class,
         "confidence": top1_confidence,
-        "confidence_gap": round(
-            confidence_gap,
-            2
-        ),
-        "top_predictions": top_predictions
+        "confidence_gap": round(confidence_gap, 2),
+        "top_predictions": top_predictions,
+        "recipes": recipe_results
     }
-
-
-# -------------------------
-# TEST
-# -------------------------
-result = predict_image(
-    "./test_images/pizza.jpg"
-)
-
-print()
-print("Prediction:", result["prediction"])
-print("Confidence:", result["confidence"])
-print(
-    "Confidence gap:",
-    result["confidence_gap"]
-)
-
-print()
-print("Top 3 predictions:")
-
-for item in result["top_predictions"]:
-
-    print(
-        f"{item['food']}: "
-        f"{item['confidence']}%"
-    )
