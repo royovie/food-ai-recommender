@@ -1,4 +1,4 @@
-from backend.main import determine_prediction
+from backend.prediction_utils import determine_prediction
 
 def test_high_confidence_prediction():
     predictions = [
