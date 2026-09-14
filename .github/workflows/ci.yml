@@ -32,3 +32,24 @@ jobs:
       - name: Run tests
         run: |
           pytest tests -v
+
+  docker-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build backend Docker image
+        run: |
+          docker build \
+            -f Dockerfile.backend \
+            -t food-ai-backend:test \
+            .
+
+      - name: Build frontend Docker image
+        run: |
+          docker build \
+            -f Dockerfile.frontend \
+            -t food-ai-frontend:test \
+            .
