@@ -45,3 +45,11 @@ jobs:
             -f Dockerfile.frontend \
             -t food-ai-frontend:test \
             .
+          
+          - name: Run tests
+            run: |
+              pytest tests -v
+          
+          - name: Run tests
+            run: |
+              python -m pytest tests -v
