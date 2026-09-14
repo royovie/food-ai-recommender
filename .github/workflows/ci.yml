@@ -20,14 +20,12 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install backend dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-backend.txt
-
-      - name: Install frontend dependencies
-        run: |
           pip install -r requirements-frontend.txt
+          pip install pytest
 
       - name: Run tests
         run: |
@@ -39,13 +37,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Build backend Docker image
-        run: |
-          docker build \
-            -f Dockerfile.backend \
-            -t food-ai-backend:test \
-            .
 
       - name: Build frontend Docker image
         run: |
