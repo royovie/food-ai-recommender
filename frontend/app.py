@@ -1,8 +1,15 @@
 import streamlit as st
 import requests
 
-API_URL = "http://127.0.0.1:8000/predict"
-RECIPE_URL = "http://127.0.0.1:8000/recipes"
+import os
+
+BACKEND_URL = os.getenv(
+    "BACKEND_URL",
+    "http://127.0.0.1:8000"
+)
+
+API_URL = f"{BACKEND_URL}/predict"
+RECIPE_URL = f"{BACKEND_URL}/recipes"
 
 st.set_page_config(
     page_title="AI Food Recipe Recommender",

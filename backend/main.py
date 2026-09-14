@@ -18,13 +18,14 @@ device = torch.device(
 )
 
 # Load Food-101 class names
-dataset = Food101(
-    root="./data",
-    split="test",
-    download=False
-)
-
-class_names = dataset.classes
+with open(
+    "./models/food101_classes.txt",
+    "r"
+) as file:
+    class_names = [
+        line.strip()
+        for line in file.readlines()
+    ]
 
 # Load model
 weights = models.MobileNet_V3_Small_Weights.DEFAULT

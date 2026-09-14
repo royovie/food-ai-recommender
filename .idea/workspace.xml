@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97ba1b48-6f22-4103-9010-50c0d7f50626" name="Changes" comment="">
+    <list default="true" id="97ba1b48-6f22-4103-9010-50c0d7f50626" name="Changes" comment="m">
+      <change afterPath="$PROJECT_DIR$/.dockerignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/recipe_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/app.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ml/download_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile.backend" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dockerfile.frontend" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements-docker.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/evaluate.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/evaluate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ml/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/ml/train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/app.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,6 +76,15 @@
       <option name="presentableId" value="Default" />
       <updated>1788629967844</updated>
     </task>
+    <task id="LOCAL-00001" summary="m">
+      <option name="closed" value="true" />
+      <created>1788793044038</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1788793044040</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -91,5 +97,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="m" />
+    <option name="LAST_COMMIT_MESSAGE" value="m" />
   </component>
 </project>
